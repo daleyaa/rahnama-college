@@ -1,0 +1,21 @@
+###
+POST http://localhost:3000/plan
+Content-Type: application/json
+Authorization: 374ad3b4-29f0-46a3-82ba-d90997946b13
+
+{
+  "title": "plan1",
+  "description": ""
+}
+
+###
+GET http://localhost:3000/plan/3
+
+###
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "username": "kosar",
+  "password": "1234"
+}
