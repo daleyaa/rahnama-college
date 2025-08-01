@@ -1,0 +1,26 @@
+{
+  "name": "expense-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Kosar Asadipour",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=Test jest --testMatch **/src/**/*.spec.ts",
+    "start": "ts-node src/main.ts"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "node-ts": "^8.0.6",
+    "uuid": "^11.1.0",
+    "zod": "^4.0.14"
+  },
+  "devDependencies": {
+    "@jest/globals": "^30.0.5",
+    "@types/express": "^5.0.3",
+    "@types/jest": "^30.0.0",
+    "jest": "^30.0.5",
+    "ts-jest": "^29.4.0"
+  }
+}
