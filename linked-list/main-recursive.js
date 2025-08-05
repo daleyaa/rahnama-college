@@ -3,18 +3,29 @@ class Node {
         this.value = value;
         this.next = null;
     }
-    append =(value) => {
-        // if(!this) {
-        //     const node  = new Node (value, null)
-        //     node.value
-        //     return
-        // }
-        if(this.next === null) {
-            const node  = new Node (value, null)
-           this.next = node;
-           return
+    append = (newValue) => {
+        if (this.next === null) {
+            const node = new Node(newValue, null)
+            this.next = node;
+            return
         }
-        this.append(value)
+        this.append(newValue)
+
+    }
+    map = (cb) => {
+
+        if (this.next === null) {
+            const node = new Node(cb(value), null)
+            this.next = node;
+            return
+        }
+        this.map(cb)
+    }
+    forEach = (cb) => {
+        while (this) {
+            cb(this.value);
+            new Node(this.next);
+        }
     }
 
 }
@@ -24,5 +35,7 @@ class Node {
 //     }
 // }
 
-const node = new Node ("1")
+const node = new Node("1")
 node.append("10")
+node.append("20")
+node.forEach((x) => console.log(x))

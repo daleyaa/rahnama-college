@@ -1,5 +1,6 @@
 import { Response } from "express";
-import { HttpError } from "./http-error"
+import { HttpError } from "./http-error";
+
 export const handleExpress = <A>(res: Response, fn: () => A) => {
   try {
     const data = fn();

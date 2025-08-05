@@ -1,5 +1,6 @@
 import { Debt } from "./get-group-debts";
 import { getGroup } from "./get-group";
+import { expenses } from "../../database/data";
 
 export const getGroupSettlement = (debts: Debt, groupId: string) => {
   const group = getGroup(groupId);
@@ -35,3 +36,23 @@ export const getGroupSettlement = (debts: Debt, groupId: string) => {
   }
   return debts;
 }
+
+const getGroupExpense = (groupId: string) => {
+  return expenses.filter(exp => exp.groupId === groupId)
+}
+
+const getGroupDebtAmin = (groupId: string) => {
+  // const group = getGroup(groupId);
+  // const usersIds = group.userIds;
+
+  const groupExpenses = getGroupExpense(groupId)
+
+  const payments = groupExpenses.reduce((prev, curr) => {
+    prev[curr.payerId] = (prev[curr.payerId] ?? 0) + curr.expense
+    return prev
+
+
+    // totalSum: 800
+
+
+  }

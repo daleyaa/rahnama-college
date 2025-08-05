@@ -8,36 +8,28 @@ import { ZodError } from "zod";
 
 export const app = Router();
 
-type UserRole = "Admin"| "Representative"| "Normal";
+type UserRole = "Admin" | "Representative" | "Normal";
 
-export interface User{
+export interface User {
   id: string,
   username: string,
-  password:string,
+  password: string,
   role: UserRole
 }
 
 export const users: User[] = [{
-  id:v4(),
+  id: v4(),
   username: "kosar",
   password: "1234",
-  role:"Admin"
-},{
-  id:v4(),
+  role: "Admin"
+}, {
+  id: v4(),
   username: "Ali",
   password: "1234",
   role: "Representative"
 }];
 
-app.post("/login",(req, res) => {
-  try {
-    const dto = loginDto.parse(req.body);
-    handleExpress<User>(res, () => login(dto));
-  } catch (error) {
-    if(error instanceof ZodError) {
-      res.status(400).send({message: error.message});
-      return;
-    }
-  }
-
+app.post("/login", (req, res) => {
+  const dto = loginDto.parse(req.body);
+  handleExpress<User>(res, () => login(dto));
 })

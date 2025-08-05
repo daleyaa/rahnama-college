@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/users/1/expenses?groupId=3
+GET http://localhost:3000/users/3/expenses
 
 ###
 GET http://localhost:3000/users/2/debts
