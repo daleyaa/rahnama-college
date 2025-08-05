@@ -76,7 +76,7 @@ describe("Create Program", () => {
           id: 1,
           title: 'oromie',
           programs: [
-            { id: 1, title: "fbb", description: "", userId: "1" }
+            { id: 1, title: "fbb", description: "", userId: "1", "planId": 1 }
           ],
           description: "",
           deadline: tomorrow

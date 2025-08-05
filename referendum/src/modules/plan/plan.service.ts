@@ -1,5 +1,5 @@
 import { ForbiddenError, HttpError, NotFoundError } from "../../../utility/http-error";
-import { User } from "../../routes/user.route";
+import { User } from "../user/model/user";
 import { CreatePlanDto } from "./dto/create-plan.dto";
 import { Plan } from "./model/plan";
 import { PlanRepository } from "./plan.repository";
