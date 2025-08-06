@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test:e2e": "NODE_ENV=Test jest --testMatch **/e2e/**/*.spec.ts",
+    "test:e2e": "NODE_ENV=test jest --testMatch **/e2e/**/*.spec.ts",
     "start": "ts-node src/main.ts",
-    "test": "NODE_ENV=Test jest --testMatch **/src/**/*.spec.ts"
+    "test": "NODE_ENV=test jest --testMatch **/src/**/*.spec.ts"
   },
   "keywords": [],
   "author": "",
