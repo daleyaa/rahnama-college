@@ -1,13 +1,15 @@
 import request from "supertest";
-import { app } from "../src/api";
+import { Express } from "express";
 import { loginAdminTest, createPlanTest, loginRepTest } from "./utility";
 import { AppDataSource } from "../src/data-source";
 import { seedUser } from "../src/seed";
+import { makeApp } from "../src/api";
 
 describe("Plan", () => {
+  let app: Express
   beforeAll(async () => {
-    await AppDataSource.initialize();
-    await seedUser();
+    const dataSource = await AppDataSource.initialize();
+    app = makeApp(dataSource);
   });
 
   afterAll(async () => {
@@ -20,7 +22,7 @@ describe("Plan", () => {
     });
 
     it("Should fail if user is not admin", async () => {
-      const { body: user } = await loginRepTest();
+      const { body: user } = await loginRepTest(app);
       const today = new Date();
       const tomorrow = new Date(today.setDate(today.getDate() + 1));
       const plan = await request(app)
@@ -37,12 +39,12 @@ describe("Plan", () => {
     })
 
     it("should Create a plan if we are logged in", async () => {
-      const { body: plan } = await createPlanTest();
+      const { body: plan } = await createPlanTest(app);
       expect(plan.title).toBe("plan1");
     });
 
     it("should send bad request if title is not provided", async () => {
-      const { body: user } = await loginAdminTest();
+      const { body: user } = await loginAdminTest(app);
 
       await request(app)
         .post("/plan")
@@ -58,7 +60,7 @@ describe("Plan", () => {
   describe("Read", () => {
 
     it("should read the plan", async () => {
-      const { body: plan } = await createPlanTest();
+      const { body: plan } = await createPlanTest(app);
       const { body: resultPlan } = await request(app).get("/plan/" + plan.id).expect(200);
       expect(resultPlan.title).toBe("plan1");
     });

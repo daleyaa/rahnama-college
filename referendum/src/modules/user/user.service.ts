@@ -4,10 +4,8 @@ import { User } from "./model/user";
 import { UserRepository } from "./user.repository";
 
 export class UserService {
-  private userRepo: UserRepository;
-  constructor() {
-    this.userRepo = new UserRepository();
-  }
+
+  constructor(private userRepo: UserRepository) { }
   async login({ username, password }: LoginDto) {
     const user = await this.userRepo.findByUsername(username);
     if (!user) {

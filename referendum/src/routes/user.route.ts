@@ -5,12 +5,13 @@ import { loginDto } from "../modules/user/dto/login.dto";
 import { handleExpress } from "../../utility/handle-express";
 import { ZodError } from "zod";
 import { User } from "../modules/user/model/user";
-import { userService } from "../dependency";
+import { UserService } from "../modules/user/user.service";
 
-export const app = Router();
-
-app.post("/login", (req, res) => {
-  const dto = loginDto.parse(req.body);
-  handleExpress<User>(res, () => userService.login(dto));
-})
-
+export const makeUserRouter = (userService: UserService) => {
+  const app = Router();
+  app.post("/login", (req, res) => {
+    const dto = loginDto.parse(req.body);
+    handleExpress<User>(res, () => userService.login(dto));
+  });
+  return app;
+}

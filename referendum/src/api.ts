@@ -1,27 +1,42 @@
 import express, { ErrorRequestHandler } from 'express';
-import { app as planRoutes } from './routes/plan.route';
-import { app as userRoute } from './routes/user.route';
+import { DataSource } from 'typeorm';
 import { ZodError } from 'zod';
-export const app = express();
+import { makePlanRouter } from './routes/plan.route';
+import { PlanRepository } from './modules/plan/plan.repository';
+import { PlanService } from './modules/plan/plan.service';
+import { UserRepository } from './modules/user/user.repository';
+import { UserService } from './modules/user/user.service';
+import { makeUserRouter } from './routes/user.route';
 
-app.use(express.json());
+export const makeApp = (datasource: DataSource) => {
+  const app = express();
+  app.use(express.json());
 
-if (process.env.NODE_ENV !== "Test") {
-  app.use((req, res, next) => {
-    console.log(req.method, req.url);
-  })
-}
-app.use("/plan", planRoutes);
-app.use(userRoute);
-
-
-app.use((req, res) => {
-  res.status(404).send({ Message: "Not Found" });
-})
-const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
-  if (error instanceof ZodError) {
-    res.status(400).send({ message: error.message });
+  if (process.env.NODE_ENV !== "Test") {
+    app.use((req, res, next) => {
+      console.log(req.method, req.url);
+    })
   }
-  res.status(500).send();
+
+  const planRepo = new PlanRepository(datasource);
+  const planService = new PlanService(planRepo);
+
+  const userRepo = new UserRepository(datasource);
+  const userService = new UserService(userRepo);
+
+  app.use("/plan", makePlanRouter(planService, userService));
+  app.use(makeUserRouter(userService));
+
+
+  app.use((req, res) => {
+    res.status(404).send({ Message: "Not Found" });
+  })
+  const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
+    if (error instanceof ZodError) {
+      res.status(400).send({ message: error.message });
+    }
+    res.status(500).send();
+  }
+  app.use(errorHandler);
+  return app;
 }
-app.use(errorHandler);

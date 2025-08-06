@@ -1,14 +1,14 @@
 import request from "supertest";
-import { app } from "../src/api";
+import { Express } from "express";
 
-export const loginAdminTest = async () => {
+export const loginAdminTest = async (app: Express) => {
   const user = await request(app)
     .post("/login")
     .send({ username: "kosar", password: "1234" })
     .expect(200);
   return user;
 }
-export const loginRepTest = async () => {
+export const loginRepTest = async (app: Express) => {
   const user = await request(app)
     .post("/login")
     .send({ username: "Ali", password: "1234" })
@@ -16,10 +16,10 @@ export const loginRepTest = async () => {
   return user;
 }
 
-export const createPlanTest = async () => {
+export const createPlanTest = async (app: Express) => {
   const today = new Date();
   const tomorrow = new Date(today.setDate(today.getDate() + 1));
-  const { body: user } = await loginAdminTest();
+  const { body: user } = await loginAdminTest(app);
   const plan = await request(app)
     .post("/plan")
     .set("Authorization", user.id)

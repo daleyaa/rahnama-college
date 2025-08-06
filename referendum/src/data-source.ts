@@ -6,7 +6,6 @@ import { UserEntity } from "./modules/user/entity/user.entity";
 import { PlanEntity } from "./modules/plan/entity/plan.entity";
 import { ProgramEntity } from "./modules/plan/program/entity/program.entity";
 
-
 export const AppDataSource = new DataSource({
   type: "mysql",
   host: "127.0.0.1",

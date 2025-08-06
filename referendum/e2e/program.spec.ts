@@ -1,14 +1,15 @@
 import request from "supertest";
-import { app } from "../src/api";
+import { Express } from "express";
 import { createPlanTest, loginAdminTest, loginRepTest } from "./utility";
 import { AppDataSource } from "../src/data-source";
 import { seedUser } from "../src/seed";
+import { makeApp } from "../src/api";
 
 describe("Program", () => {
-
+  let app: Express
   beforeAll(async () => {
-    await AppDataSource.initialize();
-    await seedUser();
+    const dataSource = await AppDataSource.initialize();
+    app = makeApp(dataSource);
   });
 
   afterAll(async () => {
@@ -16,7 +17,7 @@ describe("Program", () => {
   });
   describe("Create", () => {
     it("Should fail if we did not login", async () => {
-      const { body: adminUser } = await loginAdminTest();
+      const { body: adminUser } = await loginAdminTest(app);
       const today = new Date();
       const tomorrow = new Date(today.setDate(today.getDate() + 1));
 
@@ -34,8 +35,8 @@ describe("Program", () => {
     });
 
     it("should create a program", async () => {
-      const { body: adminUser } = await loginAdminTest();
-      const { body: repUser } = await loginRepTest();
+      const { body: adminUser } = await loginAdminTest(app);
+      const { body: repUser } = await loginRepTest(app);
       const today = new Date();
       const tomorrow = new Date(today.setDate(today.getDate() + 1));
 

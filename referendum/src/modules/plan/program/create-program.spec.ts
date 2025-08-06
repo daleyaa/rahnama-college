@@ -1,10 +1,31 @@
 import { ForbiddenError, HttpError } from "../../../../utility/http-error";
+import { Plan } from "../model/plan";
+import { CreatePlan, CreateProgram, IPlanRepository } from "../plan.repository";
 import { PlanService } from "../plan.service";
 
+class MockPlanRepo implements IPlanRepository {
+  plans: Plan[] = []
+  async create(plan: CreatePlan): Promise<Plan> {
+    this.plans.push({
+      id: 1,
+      ...plan,
+    });
+    return {
+      id: 1,
+      ...plan,
+    }
+  }
+  findById(id: number): Promise<Plan | null> {
+    throw new Error("Method not implemented.");
+  }
+  addProgram(plan: Plan, program: CreateProgram): Promise<Plan> {
+    throw new Error("Method not implemented.");
+  }
+}
 describe("Create Program", () => {
   let planService: PlanService;
   beforeEach(() => {
-    planService = new PlanService();
+    planService = new PlanService(new MockPlanRepo());
   });
   it("should not create program if user is not representative", () => {
     expect(() =>
