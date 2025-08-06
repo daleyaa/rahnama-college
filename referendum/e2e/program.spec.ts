@@ -1,8 +1,19 @@
 import request from "supertest";
 import { app } from "../src/api";
 import { createPlanTest, loginAdminTest, loginRepTest } from "./utility";
+import { AppDataSource } from "../src/data-source";
+import { seedUser } from "../src/seed";
 
 describe("Program", () => {
+
+  beforeAll(async () => {
+    await AppDataSource.initialize();
+    await seedUser();
+  });
+
+  afterAll(async () => {
+    await AppDataSource.destroy();
+  });
   describe("Create", () => {
     it("Should fail if we did not login", async () => {
       const { body: adminUser } = await loginAdminTest();
@@ -38,14 +49,17 @@ describe("Program", () => {
 
         })
         .expect(200);
-      const { body: program } = await request(app)
+
+      const { body: planWithProgram } = await request(app)
         .post(`/plan/${plan.id}/program`)
         .set("Authorization", repUser.id)
         .send({
-          title: "program1",
+          title: "program2",
           description: "running"
         })
         .expect(200);
+      expect(planWithProgram.programs).toHaveLength(1);
+
     });
   });
 

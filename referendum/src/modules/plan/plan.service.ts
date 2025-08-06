@@ -19,9 +19,9 @@ export class PlanService {
 
     return plan;
   }
-  createProgram(dto: CreateProgramDto, user: User): Program {
-    const plan = this.planRepo.findById(dto.planId);
-    if (plan === undefined) {
+  async createProgram(dto: CreateProgramDto, user: User): Promise<Plan> {
+    const plan = await this.planRepo.findById(dto.planId);
+    if (!plan) {
       throw new NotFoundError();
     }
 

@@ -13,9 +13,13 @@
   "type": "commonjs",
   "description": "",
   "dependencies": {
+    "dotenv-flow": "^4.1.0",
     "express": "^5.1.0",
+    "mysql": "^2.18.1",
     "node-tsc": "^0.0.14",
+    "reflect-metadata": "^0.2.2",
     "supertest": "^7.1.4",
+    "typeorm": "^0.3.25",
     "uuid": "^11.1.0",
     "zod": "^4.0.14"
   },

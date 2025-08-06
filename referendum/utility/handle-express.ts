@@ -1,9 +1,9 @@
 import { Response } from "express";
 import { HttpError } from "./http-error";
 
-export const handleExpress = <A>(res: Response, fn: () => A) => {
+export const handleExpress = async<A>(res: Response, fn: () => Promise<A>) => {
   try {
-    const data = fn();
+    const data = await fn();
     res.status(200).send(data);
   } catch (error) {
     if (error instanceof HttpError) {
